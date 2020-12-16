@@ -1,0 +1,112 @@
+"bounce.outdoor"
+{
+	"dsp"	"1"
+
+	"playsoundscape"
+	{
+		"name"		"streetwar.util_light_combat_atmosphere"
+		"volume"	"0.5"
+	}
+
+	"playlooping"
+	{
+		"volume"	"0.15"
+		"wave"		"ambient/atmosphere/city_tone.wav"
+		"pitch"		"100"
+	}
+
+	
+	"playsoundscape"
+	{
+		"name"		"streetwar.util_medium_combat"
+		"volume"	"0.6"	
+	}
+
+	"playrandom"
+	{
+		"time"		"30,50"
+		"volume"	"0.4,0.3"
+		"pitch"		"100"
+
+		"rndwave"
+		{
+			"wave"	"*npc/overwatch/cityvoice/f_citizenshiprevoked_6_spkr.wav"
+			"wave"	"*npc/overwatch/cityvoice/f_capitalmalcompliance_spkr.wav"
+			"wave"	"*npc/overwatch/cityvoice/f_anticitizenreport_spkr.wav"
+			"wave"	"*npc/overwatch/cityvoice/f_rationunitsdeduct_3_spkr.wav"
+			"wave"	"*npc/overwatch/cityvoice/f_protectionresponse_5_spkr.wav"
+		}
+	}
+
+	"playrandom"
+	{
+		"volume"	"0.13,0.23"
+		"pitch"		"100"
+		"time"		"5.0, 12.0"
+		"pitch"		"90,130"
+		"position"	"random"
+		"rndwave"
+		{
+			"wave" "ambient/wind/wind_med1.wav"
+			"wave" "ambient/wind/wind_hit1.wav"
+			"wave" "ambient/wind/wind_hit2.wav"
+			"wave" "ambient/wind/wind_snippet3.wav"
+			"wave" "ambient/wind/wind_snippet4.wav"
+			"wave" "ambient/wind/wind_snippet5.wav"
+		}
+	}
+}
+
+"bounce.indoor"
+{
+	"dsp" "1"
+
+	"playlooping"
+	{
+		"volume"	"0.3"
+		"wave"		"ambient/atmosphere/Drone2LP.wav"
+		"pitch"		"100"
+	}
+
+	"playlooping"
+	{
+		"volume"	"0.2"
+		"wave"		"ambient/atmosphere/cave_outdoor1.wav"
+		"pitch"		"100"
+	}
+}
+
+"bounce.sewer"
+{
+	"dsp" "1"
+
+	"playlooping"
+	{
+		"volume"	"0.3"
+		"wave"		"ambient/water/corridor_water.wav"
+		"pitch"		"100"
+	}
+
+	"playlooping"
+	{
+		"volume"	"0.1"
+		"wave"		"ambient/atmosphere/Drone2LP.wav"
+		"pitch"		"100"
+	}
+
+	"playrandom"
+	{
+		"volume"	"0.13,0.23"
+		"pitch"		"100"
+		"time"		"3.0, 10.0"
+		"pitch"		"90,130"
+		"position"	"random"
+		"rndwave"
+		{
+			"wave" "ambient/water/distant_drip1.wav"
+			"wave" "ambient/water/distant_drip2.wav"
+			"wave" "ambient/water/distant_drip3.wav"
+			"wave" "ambient/water/distant_drip4.wav"
+		}
+	}
+}
