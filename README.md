@@ -4,25 +4,47 @@ This is a Half-Life 2: Deathmatch Dedicated Server based on the Docker Server by
 
 ## Linux Container
 
-### Download
+### Build
+
+To build your own server from this repo do:
 
 ```shell
-docker pull dts2k/hl2dmsvr;
+git clone --recursive https://github.com/tschumi/hl2dmsvr.git
+cd hl2dmsvr
+docker build -t <yourchoosenname> .
+docker push <yourchoosenname> <yourreponame/yourchoosenname>
 ```
+
+#### Useful hints
+
+If using podman to push the image to docker hub, you have to add --format=v2s1 to the push command to avoid the "missing manifest" error.
+
+To change the sv_password you could use this command on console of the running the container:
+sed -i "s|sv_password \"dts2kinit\"|sv_password \"<yoursecretpassword>\"|g" /app/hl2mp/cfg/server.cfg
 
 ### Run Self Tests
 
 The image includes a test script that can be used to verify its contents. No changes or pull-requests will be accepted to this repository if any tests fail.
 
 ```shell
-docker run -it --rm dts2k/hl2dmsvr ./ll-tests/gamesvr-hl2dm-freeplay.sh;
+docker run -it --rm dts2k/hl2dmsvr ./ll-tests/gamesvr-hl2dm-freeplay.sh
 ```
 
-### Run simple interactive server
+### Run simple interactive lan server
 
 ```shell
-docker run -it --rm --net=host dts2k/hl2dmsvr ./srcds_run -console -game hl2mp +map dm_carousel +maxplayers 8 +sv_lan 0
+docker pull dts2k/hl2dmsvr
+docker run -it --rm --net=host dts2k/hl2dmsvr ./srcds_run -console -game hl2mp +map dm_carousel +maxplayers 8 +sv_lan 1
 ```
+
+#### Hint
+
+To make the server reachable from the world out there, you have to change the sv_lan variable to 0. Also make sure, the following ports are open and directing to your server:
+
+* 27015/tcp
+* 27015/udp
+* 27020/udp
+* 26900/udp
 
 ## Getting Started with Game Servers in Docker
 
