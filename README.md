@@ -17,6 +17,8 @@ docker push <yourchoosenname> <yourreponame/yourchoosenname>
 
 #### Useful hints
 
+If building on a machine with Apple Silicon, you have to add the --platform linux/amd64 to the build and run commands.
+
 If using podman to push the image to docker hub, you have to add --format=v2s1 to the push command to avoid the "missing manifest" error.
 
 To change the sv_password you could use this command on console of the running the container:
