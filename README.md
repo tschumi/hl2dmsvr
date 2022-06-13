@@ -22,7 +22,7 @@ If building on a machine with Apple Silicon, you have to add the --platform linu
 If using podman to push the image to docker hub, you have to add --format=v2s1 to the push command to avoid the "missing manifest" error.
 
 To change the sv_password you could use this command on console of the running the container:
-sed -i "s|sv_password \"dts2kinit\"|sv_password \"<yoursecretpassword>\"|g" /app/hl2mp/cfg/server.cfg
+sed -i 's|sv_password \"dts2kinit\"|sv_password \"<yoursecretpassword>\"|g' /app/hl2mp/cfg/server.cfg
 
 ### Run Self Tests
 
