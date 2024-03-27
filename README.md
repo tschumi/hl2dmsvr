@@ -19,7 +19,7 @@ There are the following environment variables:
 To run it directly you can use the following command and add as much environment variables with -e as you need.
 
 ```shell
-docker run -it --rm --net=host dts2k/hl2dm-server -e "SV_HOSTNAME=<Name of your Server>" -e "MAP=<map to start with>"
+docker run -it --rm --net=host dts2k/hl2dmsvr -e "SV_HOSTNAME=<Name of your Server>" -e "MAP=<map to start with>"
 ```
 
 To run it with docker-compose you have to change the environment variables in the docker-compose.yml to your own needs. Example:
@@ -28,8 +28,8 @@ To run it with docker-compose you have to change the environment variables in th
 version: '3'
 services:
   app:
-    image: dts2k/hl2dm-server
-    container_name: hl2dm-server
+    image: dts2k/hl2dmsvr
+    container_name: hl2dmsvr
     restart: always
     network_mode: host    
     stdin_open: true
@@ -55,13 +55,13 @@ docker-compose up
 To build your own server from this repo run the following commands:
 
 ```shell
-git clone --recursive https://github.com/tschumi/hl2dm-server.git
-cd hl2dm-server
+git clone --recursive https://github.com/tschumi/hl2dmsvr.git
+cd hl2dmsvr
 docker build -t <yourreponame/yourchoosenname> .
 ```
 
 ```shell
-docker run -it dts2k/hl2dm-server
+docker run -it <yourreponame/yourchoosenname>
 ```
 
 #### Useful hints
