@@ -1,35 +1,37 @@
-# escape=`
-FROM lacledeslan/gamesvr-hl2dm
+FROM ubuntu:16.04
 
-HEALTHCHECK NONE
+ARG TZ="Europe/Zurich"
+RUN apt-get update  && apt-get dist-upgrade -y &&\
+	apt-get install -y unzip p7zip-full curl wget lib32gcc1 iproute2 vim-tiny bzip2 jq software-properties-common apt-transport-https lib32stdc++6 && \
+	apt-get clean
+RUN echo "$TZ" > /etc/timezone
+RUN  ln -fs /usr/share/zoneinfo/$TZ /etc/localtime
 
-ARG BUILDNODE="unspecified"
-ARG SOURCE_COMMIT
+# go with steamcmd 
+RUN useradd -m steam
+RUN mkdir -p /steam/steamcmd_linux
+RUN chown -R steam /steam
 
-ENV LANG=de_CH.UTF-8 LANGUAGE=de_CH.UTF-8 LC_ALL=de_CH.UTF-8
-RUN sed -i "s|LC_ALL=en_US.UTF-8|LC_ALL=${LC_ALL}|g" /etc/environment
+USER steam
 
-COPY --chown=HL2DM:root ./sourcemod.linux /app/hl2mp/
+WORKDIR /steam/steamcmd_linux
+RUN wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz 
+RUN tar -xf steamcmd_linux.tar.gz
 
-COPY --chown=HL2DM:root ./sourcemod-configs /app/hl2mp/
+# go with hl2dm
+RUN mkdir -p /steam/hl2dm
+RUN ./steamcmd.sh +login anonymous +force_install_dir /steam/hl2dm +app_update 232370 +quit
 
-COPY --chown=HL2DM:root ./dist /app/
+WORKDIR /steam/hl2dm/
 
-COPY --chown=HL2DM:root ./ll-tests/*.sh /app/ll-tests
+COPY --chown=steam ./dist /steam/hl2dm/
+COPY --chown=steam start.sh /steam/hl2dm/
 
-RUN mkdir -p /app/hl2mp/logs && chown HL2DM:root /app/hl2mp/logs;
-
-RUN chmod +x /app/ll-tests/*.sh;
-
-USER HL2DM
-
-WORKDIR /app
+RUN chmod +x /steam/hl2dm/start.sh
 
 EXPOSE 27015/tcp
 EXPOSE 27015/udp
 EXPOSE 27020/udp
 EXPOSE 26900/udp
 
-CMD ["/bin/bash"]
-
-ONBUILD USER root
+CMD ["./start.sh"]
