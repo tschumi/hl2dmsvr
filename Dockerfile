@@ -1,9 +1,10 @@
-FROM ubuntu:16.04
+FROM ubuntu:24.04
 
 ARG TZ="Europe/Zurich"
-RUN apt-get update  && apt-get dist-upgrade -y &&\
-	apt-get install -y unzip p7zip-full curl wget lib32gcc1 iproute2 vim-tiny bzip2 jq software-properties-common apt-transport-https lib32stdc++6 && \
-	apt-get clean
+RUN dpkg --add-architecture i386 \ 
+	&& apt-get update \
+	&& apt-get install -y unzip p7zip-full curl wget lib32gcc-s1 iproute2 vim-tiny bzip2 jq software-properties-common apt-transport-https libsdl2-2.0-0:i386 \
+	&& apt-get clean
 RUN echo "$TZ" > /etc/timezone
 RUN  ln -fs /usr/share/zoneinfo/$TZ /etc/localtime
 
