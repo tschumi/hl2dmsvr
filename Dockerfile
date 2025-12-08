@@ -21,7 +21,7 @@ RUN tar -xf steamcmd_linux.tar.gz
 
 # go with hl2dm
 RUN mkdir -p /steam/hl2dm
-RUN ./steamcmd.sh +login anonymous +force_install_dir /steam/hl2dm +app_update 232370 +quit
+RUN ./steamcmd.sh +force_install_dir /steam/hl2dm +login anonymous +app_update 232370 +quit
 
 WORKDIR /steam/hl2dm/
 
