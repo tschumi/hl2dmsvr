@@ -1,0 +1,13 @@
+canale_grande_v2.bsp
+dm_bounce.bsp
+dm_carousel.bsp
+dm_gotei_b6-1.bsp
+dm_gravlab.bsp
+dm_mesabase.bsp
+dm_mogliano17.bsp
+dm_necessity.bsp
+dm_plaza17.bsp
+dm_shithole.bsp
+dm_snowfall.bsp
+dm_urban_small.bsp
+dm_veranda.bsp

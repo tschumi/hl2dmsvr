@@ -1,6 +1,8 @@
 FROM ubuntu:24.04
 
 ARG TZ="Europe/Zurich"
+ARG contentServer="http://tswb.ch/srcds"
+
 RUN dpkg --add-architecture i386 \ 
 	&& apt-get update \
 	&& apt-get install -y unzip p7zip-full curl wget lib32gcc-s1 iproute2 vim-tiny bzip2 jq software-properties-common apt-transport-https libsdl2-2.0-0:i386 \
@@ -27,6 +29,9 @@ WORKDIR /steam/hl2dm/
 
 COPY --chown=steam ./dist /steam/hl2dm/
 COPY --chown=steam start.sh /steam/hl2dm/
+
+RUN wget -P /steam/hl2dm/hl2mp/maps/ --no-verbose -i /steam/hl2dm/hl2mp/maps/maps.txt --base="$contentServer/maps/" \
+	&& chown -R steam:steam /steam/hl2dm/hl2mp/maps/
 
 RUN chmod +x /steam/hl2dm/start.sh
 
