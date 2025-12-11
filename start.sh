@@ -27,6 +27,16 @@ if [[ -f "$SERVER_CFG" ]]; then
         fi
     fi
     
+    # Replace sv_downloadurl if SV_DOWNLOADURL is set
+    if [[ -n $SV_DOWNLOADURL ]]; then
+        if grep -q "^sv_downloadurl" "$SERVER_CFG"; then
+            sed -i "s|^sv_downloadurl \".*\"|sv_downloadurl \"$SV_DOWNLOADURL\"|" "$SERVER_CFG"
+        else
+            # Add it after sv_password if it doesn't exist
+            sed -i "/^sv_password/a sv_downloadurl \"$SV_DOWNLOADURL\"" "$SERVER_CFG"
+        fi
+    fi
+    
     # Replace or add rcon_password if RCON_PASSWORD is set
     if [[ -n $RCON_PASSWORD ]]; then
         if grep -q "^rcon_password" "$SERVER_CFG"; then

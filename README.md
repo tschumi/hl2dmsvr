@@ -15,6 +15,7 @@ There are the following environment variables:
     WINLIMIT: <number of limit to win>
     MAP: <map to start with>
     MAXPLAYERS: <number of max players>
+    SV_DOWNLOADURL: <url for faster downloads>
 
 To run it directly you can use the following command and add as much environment variables with -e as you need.
 
