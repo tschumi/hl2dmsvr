@@ -1,6 +1,8 @@
 dm_carousel
+dm_electrix
 dm_bounce
 canale_grande_v2
+dm_ghettoquad_r6
 dm_snowfall
 dm_veranda
 dm_runoff

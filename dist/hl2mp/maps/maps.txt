@@ -1,4 +1,6 @@
 canale_grande_v2.bsp
+dm_electrix.bsp
+dm_ghettoquad_r6.bsp
 dm_bounce.bsp
 dm_carousel.bsp
 dm_gotei_b6-1.bsp
