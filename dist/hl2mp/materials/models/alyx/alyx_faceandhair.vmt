@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+	"$surfaceprop" "Flesh"
+	"$basetexture" "models/Alyx/LIMA8_Face"
+	"$bumpmap" "models/alyx/LIMA8_Face_normal"
+	"$model" 1
+	"$nocull" 1
+	"$halflambert" "1"
+	//"$detail" "models/Alyx/Skin_Detail3"
+	//"$detailscale" "2"
+}
+

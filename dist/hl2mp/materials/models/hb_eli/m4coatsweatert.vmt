@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Eli/M4CoatSweaterT"
+	"$bumpmap" "models/HB_Eli/M4CoatSweaterT_Normal"
+	"$detail" "Models/HB_Common/leather_detail"
+	"$detailscale" "4"	
+	"$surfaceprop" "Carpet"
+	"$halflambert" 1
+	"$model" 1
+	"$nocull" 1
+ 	
+} 
+
+
+
+
+
+
+
+

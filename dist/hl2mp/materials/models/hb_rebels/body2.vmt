@@ -1,0 +1,22 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Rebels/BODY2"
+	"$bumpmap" "models/HB_Rebels/Body_normal"	
+	"$nocull" 1
+	"$model" "1"
+	"$halflambert" 1
+	//"$detail" "models/HB_Common/skindetail_dark"	
+	//"$detailscale" 5
+	//"$phong" "1"
+  	//"$phongexponent" "5"
+	//"$phongboost" "1" 
+	//"$phongalbedotint" "1"	
+} 
+
+
+
+
+
+
+
+

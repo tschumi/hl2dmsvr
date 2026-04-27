@@ -1,0 +1,9 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models/HB_Monk/MJeans3"	
+	 "$bumpmap" "models/HB_Monk/MJeans3_normal"
+	"$nocull" 1
+	"$halflambert" 1
+	"$detail" "models/HB_Common/Jeans_Detail"
+	"$detailscale" "5"
+}

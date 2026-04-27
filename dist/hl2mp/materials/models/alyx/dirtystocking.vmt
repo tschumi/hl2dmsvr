@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/Alyx/DirtyStocking"
+	"$surfaceprop" "flesh"
+	"$halflambert" 1
+        "$model" 1
+	"$nocull" 1
+} 
+
+
+
+
+
+
+
+

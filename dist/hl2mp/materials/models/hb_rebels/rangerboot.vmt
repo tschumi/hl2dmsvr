@@ -1,0 +1,6 @@
+"vertexlitgeneric"
+{
+	"$no_draw" "1"
+	"$basetexture" "models/HD_Common/dyn_normal"
+	"$alphatest" "1" 
+}

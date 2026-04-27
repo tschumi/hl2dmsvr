@@ -1,0 +1,8 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "Models/HB_Rebels/shoes_blue"
+	"$bumpmap" "models/HB_Common/Dyn_Normal"
+	"$nocull" 1
+	"$halflambert" 1
+	"$model" "1"
+}

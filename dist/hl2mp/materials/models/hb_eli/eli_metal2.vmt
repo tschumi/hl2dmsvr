@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_eli/eli_metal2"
+  	"$bumpmap" "Models/HB_Common/universal_normal"
+	"$halflambert" 1
+	"$nodecal" "1"
+	"$detail" "Models/HB_Common/med_detail8"
+	"$detailscale" "2"
+
+
+}

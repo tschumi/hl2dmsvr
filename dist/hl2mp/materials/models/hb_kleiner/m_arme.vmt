@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Common/M_ARME"
+	"$bumpmap" "models/HB_Common/M_Arme_normal"
+	"$nocull" 1
+	"$halflambert" 1
+	"$nodecal" "1"
+	"$model" "1"
+} 
+
+
+
+
+
+
+
+

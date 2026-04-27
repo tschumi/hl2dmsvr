@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Breen/Zink"
+	"$surfaceprop" "metal"
+	"$halflambert" 1
+	"$model" 1
+	"$nocull" 1
+
+} 
+
+
+
+
+
+
+
+

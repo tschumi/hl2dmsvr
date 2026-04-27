@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Breen/Seidenmatt_Schwarz"
+	"$surfaceprop" "flesh"
+	"$halflambert" 1
+	"$model" 1
+	"$bumpmap" "models/HB_Common/Universal_normal"
+
+} 
+
+
+
+
+
+
+
+

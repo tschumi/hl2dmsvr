@@ -1,0 +1,5 @@
+"Eyeball"
+{
+	"$basetexture" "models/HB_Common/pupil_r"
+	"$nodecal" "1"
+}

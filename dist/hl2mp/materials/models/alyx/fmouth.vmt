@@ -1,0 +1,10 @@
+"Teeth"
+{
+	"$basetexture" "models/alyx/fmouth"
+	"$bumpmap" "models/alyx/alyx_Teeth_normal"
+	"$clientshader" "MouthShader"
+	"$model" "1"
+	"$halflambert" "1"
+	"$nodecal" "1"
+
+}

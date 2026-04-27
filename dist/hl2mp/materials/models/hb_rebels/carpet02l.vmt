@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+//sleave endings
+{
+	"$bumpmap" "models/HB_Rebels/Suite_normal"
+	"$baseTexture" "models/HB_Rebels/Suite2"
+	"$halflambert" 1
+	"$nocull" 1
+	"$model" 1
+
+}

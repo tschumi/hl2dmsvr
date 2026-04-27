@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/gordon/gordon_facemap"
+	"$bumpmap" "models/gordon/gordon_facemap_normal"
+	"$detail" "models/hb_common/skindetail"	
+	"$detailscale" "4"
+	"$phong" "1"
+  	"$phongexponent" "5"
+	"$phongboost" "1" 
+	"$phongalbedotint" "1"
+}

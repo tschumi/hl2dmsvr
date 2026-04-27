@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$bumpmap" "models/HB_Common/dyn_normal"
+	"$basetexture" "models/HB_Rebels/SUPPORT_BLACK"
+	"$nodecal" "1"
+	"$model" "1"
+	"$nocull" 1
+
+} 
+
+
+
+
+
+
+
+

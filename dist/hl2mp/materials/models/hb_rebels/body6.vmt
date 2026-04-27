@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Rebels/BODY6"
+	"$bumpmap" "models/HB_Rebels/body_normal"
+	"$nocull" 1
+	"$model" "1"
+	"$halflambert" 1
+		
+} 
+
+
+
+
+
+
+
+

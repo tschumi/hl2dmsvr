@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_MOSSMAN/WinterCoat"
+	"$bumpmap" "models/HB_Mossman/WinterCoat_normal"
+	"$detail" "models/HB_Common/Cloth_detail"
+	"$detailscale" "6"
+	"$model" "1"
+	"$nocull" "1"
+	"$halflambert" "1"
+} 
+
+
+
+
+
+
+
+

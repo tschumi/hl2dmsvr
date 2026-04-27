@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$bumpmap" "models/HB_Common/dyn_normal"
+	"$basetexture" "models/HB_Monk/TG_BootsV10"
+	"$nocull" 1
+	"$halflambert" 1
+	"$model" "1"
+}

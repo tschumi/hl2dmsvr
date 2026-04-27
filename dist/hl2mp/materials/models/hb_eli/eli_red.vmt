@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models/HB_eli/eli_RED"
+"$halflambert" 1
+"$nodecal" "1"
+}

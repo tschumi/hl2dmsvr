@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_MOSSMAN/TANKTOP"
+	"$bumpmap" "models/HB_MOSSMAN/Tanktop_normal"
+	"$detail" "models/HB_Common/paper3"
+	"$detailscale" "4"
+  	"$model" 1
+	"$nocull" 1
+	"$halflambert" "1"
+} 

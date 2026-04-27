@@ -1,0 +1,24 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Monk/Seidenmatt_Silber"
+	"$surfaceprop" "flesh"
+	"$model" 1
+	"$bumpmap" "models/HB_Common/Universal_normal"
+ 	"$phong" "1"
+	"$phongexponent" "4"
+	"$phongboost"	"11"
+	"$phongfresnelranges"	"[0.1 0.5 1.5]" // BOOSTED
+	"$phongalbedotint" "1"
+	"$rimlight" "0"	
+	"$rimlightexponent" "5"
+	"$rimlightboost" "2"
+
+} 
+
+
+
+
+
+
+
+

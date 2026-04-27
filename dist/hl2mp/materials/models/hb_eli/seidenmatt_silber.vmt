@@ -1,0 +1,22 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Rebels/Seidenmatt_Silber"
+	"$surfaceprop" "flesh"
+	"$model" 1
+	"$bumpmap" "Models/HB_Common/universal_normal"
+	"$nocull" 1
+ 	"$phong" "1"
+	"$phongexponent" "20"
+	"$phongboost"	"10"
+	"$phongfresnelranges"	"[0.1 2 3]"
+	"$phongalbedotint" "1"
+
+} 
+
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models/HB_Barney/botas"
+  	"$bumpmap" "models/HB_Barney/botas_norm"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[ .2 .2 .2 ]"
+	"$envmapconstrast" "1"
+	"$phong" "1"
+	"$phongboost"   "10"
+	"$phongfresnelranges" "[0.2 .5 10]"
+	"$phongexponenttexture"	"models/HB_Barney/botas_exp"
+	"$phongalbedotint" "1"
+	"$model" "1"
+	"$normalmapalphaenvmapmask" "1"
+}
+										

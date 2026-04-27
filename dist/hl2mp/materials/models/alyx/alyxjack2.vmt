@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/Alyx/BlueJacke"
+	"$bumpmap" "models/alyx/AlyxJacke_normal"
+	"$surfaceprop" "Carpet"
+        "$model" 1
+	"$nocull" 1
+	"$halflambert" "1"
+	"$detail" "models/HB_Common/leather_Detail"
+	"$detailscale" "4"
+} 
+
+
+
+
+
+
+
+

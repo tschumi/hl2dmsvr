@@ -1,0 +1,26 @@
+"VertexLitGeneric"
+{
+	"$bumpmap" "models/Alyx/dyn_normal"
+	"$basetexture" "models/Alyx/Zink"
+	"$surfaceprop" "metal"
+	"$halflambert" 1
+	"$model" 1
+	"$nocull" 1
+	"$detail" "models/HB_Common/metal_detail"	
+	"$detailscale" 5
+	"$phong" "1"
+	"$phongexponent" "15"
+	"$phongboost"	"2"
+	"$phongfresnelranges"	"[0.2 0.5 1]"
+	"$phongalbedotint" "1"
+
+ 	
+} 
+
+
+
+
+
+
+
+

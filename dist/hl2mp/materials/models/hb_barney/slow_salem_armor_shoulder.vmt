@@ -1,0 +1,10 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/HB_Barney/slow_salem_armor_shoulder"
+	"$bumpmap" "models/HB_Barney/slow_salem_armor_shoulder_bump"
+ 	"$halflambert" 1
+	"$nodecal" "1"
+	"$model" "1"
+	"$detail" "Models/HB_Common/MED_detail8"	
+	"$detailscale" "8"
+}

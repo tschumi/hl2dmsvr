@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Mossman/Seidenmatt_Schwarz"
+	"$surfaceprop" "Metal"
+	"$halflambert" 1
+	"$model" 1
+		
+} 
+
+
+
+
+
+
+
+

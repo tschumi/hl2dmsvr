@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$translucent" 1
+	"$basetexture" "models/HB_Barney/WIMPERN_TOP"
+  	"$model" 1
+	"$nocull" 1
+} 

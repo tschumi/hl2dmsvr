@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/HB_Rebels/Carpet03l"
+	"$bumpmap" "models/HB_Common/Dyn_Normal"
+	"$nocull" 1
+	"$model" 1
+
+}

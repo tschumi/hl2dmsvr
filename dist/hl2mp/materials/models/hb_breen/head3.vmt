@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Breen/HEAD3"
+	"$bumpmap" "models/HB_Breen/HEAD3_normal"
+	"$nocull" 1
+	"$model" "1"
+  	"$phong" "1"
+ 	"$phongexponent" "15"
+ 	"$phongboost" "2"
+ 	"$phongfresnelranges"	"[0.01 0.5 2]" // BOOSTED
+ 	"$phongalbedotint" "1"
+} 
+
+
+
+
+
+
+
+

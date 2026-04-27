@@ -1,0 +1,10 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "models/HB_Rebels/Brown_Gloves"
+	"$bumpmap" "models/HB_Common/dyn_normal"
+	"$nocull" "1"
+	"$halflambert" "1"
+	"$model" "1"
+	"$detail" "models/HB_Common/Leather_detail"	
+	"$detailscale" 10
+}

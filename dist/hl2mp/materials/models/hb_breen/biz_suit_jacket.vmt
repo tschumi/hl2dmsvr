@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Breen/Biz_Suit_Jacket"
+    	"$bumpmap" "models/HB_Breen/Biz_Suit_Jacket_normal"
+	"$nocull" 1
+	"$model" "1"
+	"$halflambert" 1
+	"$detail" "models/HB_Common/Jeans_Detail"
+	"$detailscale" 8
+
+} 
+
+
+
+
+
+
+
+

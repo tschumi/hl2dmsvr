@@ -1,0 +1,11 @@
+"Teeth"
+{
+	"$basetexture" "models/HB_Barney/Zaehne"
+	"$clientshader" "MouthShader"
+	"$model" 1
+	"$halflambert" 1
+	"$nodecal" "1"
+	
+}
+
+

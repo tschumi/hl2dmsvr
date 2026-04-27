@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_KLEINER/Biz_Suit_Trousers"
+	"$bumpmap" "models/HB_KLEINER/Biz_Suit_Trousers_normal"
+	"$nocull" "1"
+	"$model" "1"
+	"$halflambert" "1"
+	"$detail" "models/HB_Common/Cloth_Detail"
+	"$detailscale" "5"
+} 
+
+
+
+
+
+
+
+

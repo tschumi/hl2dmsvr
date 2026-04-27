@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$bumpmap" "models/HB_Common/dyn_normal"
+	"$baseTexture" "models/HB_Rebels/Weave"
+	"$halflambert" 1
+	"$nocull" 1
+	"$model" 1
+	"$detail" "models/HB_Common/material_1"	
+	"$detailscale" 5
+
+}

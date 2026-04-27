@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Rebels/jean7"
+	"$bumpmap" "models/HB_Rebels/Alte_Jeans_Bump"
+	"$surfaceprop" "Carpet"
+	"$detail" "models/HB_Common/Jeans_detail"
+	"$detailscale" "5"
+        "$model" 1
+	"$nocull" 1
+} 
+
+
+
+
+
+
+
+

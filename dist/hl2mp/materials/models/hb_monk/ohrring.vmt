@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Monk/Ohrring"
+	"$bumpmap" "models/HB_Common/dyn_normal"
+	"$nocull" 1
+	"$model" "1"
+} 

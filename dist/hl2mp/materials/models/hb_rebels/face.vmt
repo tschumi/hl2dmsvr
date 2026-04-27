@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Rebels/FACE"
+	"$bumpmap" "models/HB_Rebels/face_normal"
+	"$nocull" 1
+	"$model" "1"
+	"$halflambert" 1
+	//"$detail" "models/HB_Common/skindetail"	
+	//"$detailscale" 5	
+} 
+
+
+
+
+
+
+
+

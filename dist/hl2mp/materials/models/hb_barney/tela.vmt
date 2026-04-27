@@ -1,0 +1,12 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models/HB_Barney/tela"
+        "$bumpmap" "models/HB_Barney/tela_norm"
+ 	"$halflambert" 1
+	"$nodecal" "1"
+	"$model" "1"
+	
+	"$detail" "Models/HB_Common/MED_detail1"	
+	"$detailscale" 3
+}
+

@@ -1,0 +1,23 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_KLEINER/BrillenMetall"
+	"$bumpmap" "models/HB_common/Universal_normal"
+	"$nocull" 1
+ 	"$phong" "1"
+	"$phongexponent" "15"
+	"$phongboost"	"11"
+	"$phongfresnelranges"	"[0.2 0.5 1]"
+	"$phongalbedotint" "1"
+	"$rimlight" "0"	
+	"$rimlightexponent" "5"
+	"$rimlightboost" "2"
+
+} 
+
+
+
+
+
+
+
+

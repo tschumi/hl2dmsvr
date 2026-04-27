@@ -1,0 +1,14 @@
+"vertexlitgeneric"
+//boots
+{
+
+	"$basetexture" "models/HB_Rebels/Laminat3_Blue"
+	"$surfaceprop" "Carpet"
+	"$model" 1
+	"$bumpmap" "models/HB_Rebels/Laminate_Boot_normal"
+	"$nocull" 1
+ 	"$detail" "models/HB_Common/Leather_detail"	
+	"$detailscale" "5"
+	
+}
+

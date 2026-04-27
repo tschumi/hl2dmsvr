@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	// "$bumpmap" "models/HB_Mossman/Gloria_HAIR_normal"
+	"$bumpmap" "models/HB_Mossman/universal_normal"
+	"$basetexture" "models/HB_Mossman/Gloria_BLACK"
+        "$model" 1
+	"$nocull" 1
+
+} 

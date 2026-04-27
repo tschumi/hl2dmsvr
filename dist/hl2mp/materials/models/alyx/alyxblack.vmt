@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/Alyx/alyxblack"
+	"$additive" "1"
+	"$model" "1"
+}

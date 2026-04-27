@@ -1,0 +1,9 @@
+"Teeth"
+{
+	"$basetexture" "models/HB_Rebels/MOUTH"
+	"$clientshader" "MouthShader"
+	"$model" 1
+	"$halflambert" 1
+	"$nodecal" "1"
+
+}

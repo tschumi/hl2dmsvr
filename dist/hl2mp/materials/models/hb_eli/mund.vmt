@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_ELI/MUND"
+	"$model" 1
+	"$halflambert" 1
+	"$nodecal" "1"
+
+}

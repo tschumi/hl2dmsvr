@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_Rebels/MOUTH"
+	"$model" 1
+	"$halflambert" 1
+	"$nodecal" "1"
+
+}

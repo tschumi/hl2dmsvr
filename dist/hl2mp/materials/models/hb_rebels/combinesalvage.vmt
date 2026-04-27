@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$bumpmap" "models/HB_Common/dyn_normal"
+	"$basetexture" "models/HB_Rebels/waist-coat-green-cam"
+	"$halflambert" 1
+	"$nocull" 1
+}

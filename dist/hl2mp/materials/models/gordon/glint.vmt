@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/HB_Common/glint"
+	"$additive" "1"
+	"$model" "1"
+}

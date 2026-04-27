@@ -1,0 +1,8 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models/HB_Barney/c4_plate"
+	"$bumpmap" "models/HB_Barney/C4_Plate_Normal"
+	"$detail" "models/HB_Common/MED_detail1"	
+	"$detailscale" 5
+}
+

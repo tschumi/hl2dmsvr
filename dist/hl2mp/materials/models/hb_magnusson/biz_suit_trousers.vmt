@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_MAGNUSSON/Biz_Suit_Trousers"
+    	"$bumpmap" "models/HB_MAGNUSSON/Biz_Suit_Trousers_normal"
+	"$detail" "models/HB_Common/Linen_Detail"
+	"$detailscale" "5"
+	"$nocull" "1"
+	"$model" "1"
+	"$halflambert" "1"
+
+} 
+
+
+
+
+
+
+
+

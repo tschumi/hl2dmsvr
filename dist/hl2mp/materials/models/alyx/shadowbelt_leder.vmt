@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/Alyx/Shadowbelt_Leder"
+	"$bumpmap" "models/Alyx/Shadowbelt_Leder_normal"
+	"$surfaceprop" "flesh"
+        "$model" 1
+	"$nocull" 1
+}

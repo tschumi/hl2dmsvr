@@ -1,0 +1,7 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "Models/HB_Rebels/TG_Boots"
+	"$nocull" 1
+	"$halflambert" 1
+	"$model" "1"
+}

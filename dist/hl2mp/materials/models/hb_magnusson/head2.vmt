@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_MAGNUSSON/HEAD2"
+	"$bumpmap" "models/HB_MAGNUSSON/HEAD2_normal"
+	"$detail" "models/HB_Common/skin_detail3"
+	"$detailscale" 10
+	"$nocull" 1
+	"$model" "1"
+  	"$phong" "1"
+  	"$phongexponent" "5"
+	"$phongboost" "1" 
+	"$phongalbedotint" "1"
+} 
+
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$bumpmap" "models/HB_Kleiner/CivilShoes_normal"
+	"$baseTexture" "models/HB_Kleiner/CivilShoes"
+	"$halflambert" 1
+	"$nocull" 1
+	"$model" 1
+
+}

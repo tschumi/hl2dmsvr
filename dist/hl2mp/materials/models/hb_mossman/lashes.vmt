@@ -1,0 +1,10 @@
+//"UnlitGeneric"
+"VertexLitGeneric"
+{
+	"$bumpmap" "models/HB_Common/dyn_normal"
+	"$translucent" 1
+	"$basetexture" "models/HB_MOSSMAN/Lashes"
+  	"$model" 1
+	"$nocull" 1
+
+} 

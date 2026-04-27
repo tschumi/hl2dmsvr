@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/HB_KLEINER/clipboard_sheet"
+	"$bumpmap" "models/HB_Common/Universal_normal"	
+}

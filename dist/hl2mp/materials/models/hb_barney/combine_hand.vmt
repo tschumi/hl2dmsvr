@@ -1,0 +1,11 @@
+"vertexlitgeneric"
+{
+
+	"$baseTexture" "models/HB_Barney/combine_hand"
+        "$bumpmap" "models/HB_Barney/dyn_normal"
+	"$detail" "models/HB_Common/Officecarpet"	
+	"$detailscale" 3
+
+	
+}
+

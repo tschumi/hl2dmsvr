@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_ELI/eli_zink"
+  	"$bumpmap" "models/HB_common/universal_normal"
+	"$nocull" 1
+	"$halflambert" 1
+	"$nodecal" "1"
+	"$model" "1"
+}

@@ -1,0 +1,21 @@
+.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+HALF LIFE 2 Main Characters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Female_01 = Mossman
+Female_02 = Alyx Blue Jacket
+Female_03 = Alyx 
+Female_04 = Female Rebel
+Female_05 = Female Citizen (05 not selectable)
+Female_06 = FeMale Medic
+Female_07 = Female Citizen
+
+Male_01   = Kleiner
+Male_02   = Orig Rebel
+Male_03   = Magnusson
+Male_04   = Breen
+Male_05   = Gordon
+Male_06   = Monk
+Male_07   = Eli
+Male_08   = Barney
+Male_09   = Gman 

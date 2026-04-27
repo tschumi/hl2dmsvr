@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/HB_MOSSMAN/LIMBS"
+  	"$bumpmap" "models/HB_Common/dyn_normal"
+	"$nocull" 1
+	"$model" "1"
+	"$detail" "models/HB_Common/skin_detail3"
+	"$detailscale" "10"
+	"$phong" "1"
+  	"$phongexponent" "5"
+	"$phongboost" "1" 
+	"$phongalbedotint" "1"
+} 
+
+
+
+
+
+
+
+

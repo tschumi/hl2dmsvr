@@ -1,0 +1,10 @@
+"Teeth"
+{
+	"$basetexture" "models/HB_Breen/MOUTH"
+	"$clientshader" "MouthShader"
+	"$model" 1
+	"$halflambert" 1
+	"$nodecal" "1"
+
+
+}

@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+// Jacket
+{
+	"$bumpmap" "models/HB_Rebels/Jacket-Top_normal"
+	"$basetexture" "models/HB_Rebels/Jacket-Top"
+	"$surfaceprop" "Carpet"
+	"$model" 1
+	"$nocull" 1
+	"$detail" "models/HB_Common/Jeans_detail"	
+	"$detailscale" 5
+		
+
+} 
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/Alyx/LIMA8_Neck"
+	"$bumpmap" "models/alyx/LIMA8_Neck_normal"
+	$ssbump "1"
+        "$model" 1
+	"$nocull" 1
+	"$halflambert" "1"
+	//"$detail" "models/HB_Common/Skin_Detail3"
+	//"$detailscale" "8"
+	
+ 	
+}

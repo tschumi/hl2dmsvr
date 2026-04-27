@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/Alyx/DarkLiquid"
+	"$surfaceprop" "flesh"
+        "$model" 1
+	"$nocull" 1
+}

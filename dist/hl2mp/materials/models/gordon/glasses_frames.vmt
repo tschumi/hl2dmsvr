@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/gordon/Glasses_Frames"
+	"$surfaceprop" "flesh"
+	"$model" 1
+	"$bumpmap" "models/gordon/Glasses_Frames_Normal"
+	"$nocull" 1
+ 	"$phong" "1"
+	"$phongexponent" "5"
+	"$phongboost"	"2"
+	"$phongfresnelranges"	"[1.0 2.0 3.5]" // BOOSTED
+	"$phongalbedotint" "1"
+} 
+
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "models/HB_Rebels/trooper_dirt"
+	"$surfaceprop" "Carpet"
+	"$model" 1
+	"$bumpmap" "models/HB_common/Universal_normal"
+	"$nocull" 1
+ 	"$phong" "1"
+	"$phongexponent" "15"
+	"$phongboost"	"5"
+	"$phongfresnelranges"	"[0.2 0.5 1]"
+	"$phongalbedotint" "1"
+}
+

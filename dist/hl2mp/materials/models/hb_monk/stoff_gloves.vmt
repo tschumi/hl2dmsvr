@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$bumpmap" "models/HB_Common/dyn_normal"
+	"$translucent" 1
+	"$basetexture" "models/HB_Monk/Brille1_Nasenpolster"
+	"$surfaceprop" "flesh"
+  	"$model" 1
+		
+} 
+
+
+
+
+
+
+
+
