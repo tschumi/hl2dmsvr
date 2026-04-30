@@ -2,7 +2,7 @@
 
 #define MODELCHOOSER_RAWDOG_API 	/* Enable deep access? */
 #undef REQUIRE_PLUGIN 				/* Is ModelChooser plugin dependency required or optional? */
-#include <modelchooser>
+#include <modelchooser>             /* Includes modelchooser natives, internal structures if deep access is enabled */
 
 public void OnLibraryAdded(const char[] name)
 {
@@ -41,7 +41,7 @@ public void ModelChooser_OnConfigLoaded()
 {
 	PrintToServer("Model config loaded");
 
-	ModelList modelList = ModelChooser_GetModelList();
+	PlayerModelList modelList = ModelChooser_GetModelList();
 	PlayerModel model;
 
 	int size = modelList.Length;

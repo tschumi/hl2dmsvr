@@ -11,7 +11,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define PLUGIN_VERSION  "3.1"
+#define PLUGIN_VERSION  "4.0"
 
 public Plugin myinfo =
 {
@@ -37,12 +37,12 @@ public Plugin myinfo =
 #define FALLBACK_MODEL "models/error.mdl"
 int DEFAULT_HUD_COLOR[] = {150, 150, 150, 150};
 
-#include <modelchooser/utils>
 #include <modelchooser/structs>
+#include <modelchooser/utils>
 #include <modelchooser/globals>
 #include <modelchooser/natives>
 #include <modelchooser/commands>
-#include <modelchooser/menu>
+#include <modelchooser/ui>
 #include <modelchooser/sounds>
 #include <modelchooser/anims>
 #include <modelchooser/config>
@@ -52,20 +52,13 @@ public void OnPluginStart()
 {
 	LoadTranslations("common.phrases");
 
-	modelList = new ModelList();
+	modelList = new PlayerModelList();
 	soundMap = new SoundMap();
 	downloads = new SmartDM_FileSet();
 	persistentPreferences[TEAM_UNASSIGNED].Init(TEAM_UNASSIGNED);
 	
 	fwdOnConfigLoaded = new GlobalForward("ModelChooser_OnConfigLoaded", ET_Ignore, Param_Cell, Param_String);
 	fwdOnModelChanged = new GlobalForward("ModelChooser_OnModelChanged", ET_Ignore, Param_Cell, Param_String);
-	
-	RegConsoleCmd("sm_models", Command_Model);
-	RegConsoleCmd("sm_model", Command_Model);
-	RegConsoleCmd("sm_skins", Command_Model);
-	RegConsoleCmd("sm_skin", Command_Model);
-	RegAdminCmd("sm_unlockmodel", Command_UnlockModel, ADMFLAG_KICK, "Unlock a locked model by name for a player");
-	RegAdminCmd("sm_lockmodel", Command_LockModel, ADMFLAG_KICK, "Lock a previously unlocked model by name for a player");
 
 	cvSelectionImmunity = CreateConVar("modelchooser_immunity", "0", "Whether players are immune to damage when selecting models", _, true, 0.0, true, 1.0);
 	cvAutoReload = CreateConVar("modelchooser_autoreload", "0", "Whether to reload the model list on mapchanges", _, true, 0.0, true, 1.0);
@@ -78,70 +71,26 @@ public void OnPluginStart()
 	cvHudText1y = CreateConVar("modelchooser_hudtext_y", "0.01", "Hudtext 1 Y coordinate, from 0 (top) to 1 (bottom), -1 is the center");
 	cvHudText2x = CreateConVar("modelchooser_hudtext2_x", "-1", "Hudtext 2 X coordinate, from 0 (left) to 1 (right), -1 is the center");
 	cvHudText2y = CreateConVar("modelchooser_hudtext2_y", "0.95", "Hudtext 2 Y coordinate, from 0 (top) to 1 (bottom), -1 is the center");
-	cvForceFullUpdate = CreateConVar("modelchooser_forcefullupdate", "1", "Fixes weapon prediction glitch caused by going thirdperson, recommended to keep on unless you run into issues");
 	mp_forcecamera = FindConVar("mp_forcecamera");
 
 	cvTeamBased.AddChangeHook(Hook_TeamBasedCvarChanged);
 	
-	UserMsg hudMsgId = GetUserMessageId("HudMsg");
-	if (hudMsgId != INVALID_MESSAGE_ID)
-	{
-		HookUserMessage(hudMsgId, Hook_HudMsg, true);
-	}
 	HookEvent("player_hurt", Event_PlayerHurt, EventHookMode_Post);
 	HookEvent("player_spawn", Event_PlayerSpawn, EventHookMode_Post);
 	HookEvent("player_team", Event_PlayerTeam, EventHookMode_Post);
-	CreateTimer(2.0, Sounds_CheckHealthRaise, _, TIMER_REPEAT);
-	
+
 	GameData gamedata = new GameData("modelchooser");
 	if (!gamedata)
 	{
 		SetFailState("Failed to load \"modelchooser\" gamedata");
 	}
 
+	UI.Init();
+	Commands.Init();
+	Anims.Init(gamedata);
+	Sounds.Init(gamedata);
+
 	LoadDHookVirtual(gamedata, hkSetModel, "CBaseEntity::SetModel_");
-	LoadDHookVirtual(gamedata, hkDeathSound, "CBasePlayer::DeathSound");
-	LoadDHookVirtual(gamedata, hkSetAnimation, "CBasePlayer::SetAnimation");
-	
-	if (GetEngineVersion() == Engine_HL2DM)
-	{
-		char szResetSequence[] = "CBaseAnimating::ResetSequence";
-		StartPrepSDKCall(SDKCall_Entity);
-		if (PrepSDKCall_SetFromConf(gamedata, SDKConf_Signature, szResetSequence))
-		{
-			PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
-			if (!(callResetSequence = EndPrepSDKCall()))
-				LogError("Could not prep SDK call %s", szResetSequence);
-		}
-		else LogError("Could not obtain gamedata signature %s", szResetSequence);
-	
-		if (!callResetSequence)
-			LogError("Custom animations will not work");
-	}
-	
-	char szGetClient[] = "CBaseServer::GetClient";
-	StartPrepSDKCall(SDKCall_Server);
-	if (PrepSDKCall_SetFromConf(gamedata, SDKConf_Virtual, szGetClient))
-	{
-		PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
-		PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
-		if (!(callGetClient = EndPrepSDKCall()))
-			LogError("Could not prep SDK call %s", szGetClient);
-	}
-	else LogError("Could not obtain gamedata offset %s", szGetClient);
-	
-	char szUpdateAcknowledgedFramecount[] = "CBaseClient::UpdateAcknowledgedFramecount";
-	StartPrepSDKCall(SDKCall_Raw);
-	if (PrepSDKCall_SetFromConf(gamedata, SDKConf_Virtual, szUpdateAcknowledgedFramecount))
-	{
-		PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
-		if (!(callUpdateAcknowledgedFramecount = EndPrepSDKCall()))
-			LogError("Could not prep SDK call %s", szUpdateAcknowledgedFramecount);
-	}
-	else LogError("Could not obtain gamedata offset %s", szUpdateAcknowledgedFramecount);
-	
-	if (!callGetClient || !callUpdateAcknowledgedFramecount)
-		LogError("Prediction fix \"modelchooser_forcefullupdate\" will not work");
 	
 	gamedata.Close();
 }
@@ -154,7 +103,7 @@ public void OnConfigsExecuted()
 		modelList.Clear();
 		soundMap.Clear();
 		downloads.Clear();
-		LoadConfig();
+		Config.Load();
 		init = true;
 	}
 	else
@@ -204,7 +153,7 @@ public void OnClientConnected(int client)
 {
 	ResetClientModels(client);
 	ResetUnlockedModels(client);
-	tMenuInit[client] = null;
+	UI.Reset(client);
 	clientInitChecks[client] = 3;
 	currentTeam[client] = 0;
 }
@@ -215,8 +164,8 @@ public void OnClientPutInServer(int client)
 	{
 		currentTeam[client] = GetClientTeam(client);
 		DHookEntity(hkSetModel, false, client, _, Hook_SetModel);
-		DHookEntity(hkDeathSound, false, client, _, Hook_DeathSound);
-		DHookEntity(hkSetAnimation, false, client, _, Hook_SetAnimation);
+		Anims.PlayerInit(client);
+		Sounds.PlayerInit(client);
 
 		if (!--clientInitChecks[client])
 			InitClientModels(client);
@@ -240,7 +189,7 @@ public void Event_PlayerSpawn(Event event, const char[] name, bool dontBroadcast
 	int client = GetClientOfUserId(event.GetInt("userid"));
 	if (client)
 	{
-		Sounds_EventPlayerSpawn(event, client);
+		Sounds.HandlePlayerSpawn(client);
 	}
 }
 
@@ -256,6 +205,10 @@ public void Event_PlayerTeam(Event event, const char[] name, bool dontBroadcast)
 		int team = currentTeam[client] = event.GetInt("team");
 		if (team != oldTeam)
 		{
+			if (UI.IsOpen(client))
+			{
+				UI.Exit(client, true, true);
+			}
 			if (team == TEAM_UNASSIGNED || team > TEAM_SPECTATOR)
 			{
 				ReloadClientModels(client);
@@ -269,7 +222,8 @@ public void Event_PlayerHurt(Event event, const char[] name, bool dontBroadcast)
 	int client = GetClientOfUserId(event.GetInt("userid"));
 	if (client)
 	{
-		Sounds_EventPlayerHurt(event, client);
+		int health = event.GetInt("health");
+		Sounds.HandlePlayerHurt(client, health);
 	}
 }
 
@@ -290,6 +244,51 @@ void Hook_TeamBasedCvarChanged(ConVar convar, const char[] oldValue, const char[
 	}
 }
 
+public void OnPlayerRunCmdPost(int client, int buttons, int impulse, const float vel[3], const float angles[3], int weapon, int subtype, int cmdnum, int tickcount, int seed, const int mouse[2])
+{
+	if (!(0 < client <= MAXPLAYERS))
+		return;
+	
+	if (UI.IsOpen(client))
+	{
+		static int lastButtons[MAXPLAYERS + 1];
+		static int lastButtonsAdjusted[MAXPLAYERS + 1];
+		static float lastChange[MAXPLAYERS + 1];
+		static float delay[MAXPLAYERS + 1];
+
+		if (!IsPlayerAlive(client))
+		{
+			UI.Exit(client, true);
+		}
+		else if ((buttons & IN_USE || buttons & IN_JUMP) && !menuSelection[client].locked)
+		{
+			UI.Exit(client);
+		}
+		else
+		{
+			UI.SelectionThink(client, buttons, lastButtonsAdjusted[client], delay[client] != MENU_SCROLL_DELAY_MAX);
+		}
+		
+		float time = GetGameTime();
+		if (lastButtons[client] != buttons)
+		{
+			lastButtons[client] = lastButtonsAdjusted[client] = buttons;
+			lastChange[client] = time;
+			delay[client] = MENU_SCROLL_DELAY_MAX;
+		}
+		else if (buttons && time - lastChange[client] > delay[client])
+		{
+			lastButtonsAdjusted[client] = 0;
+			lastChange[client] = time;
+			delay[client] = Math_Clamp(delay[client] * 0.9, MENU_SCROLL_DELAY_MIN, MENU_SCROLL_DELAY_MAX);
+		}
+		else
+		{
+			lastButtonsAdjusted[client] = lastButtons[client];
+		}
+	}
+}
+
 //------------------------------------------------------
 // Core functions
 //------------------------------------------------------
@@ -301,7 +300,7 @@ bool GetSelectedModelAuto(int client, PlayerModel model)
 
 bool GetSelectedModel(int client, PlayerModel model, bool inMenu = false)
 {
-	return Selection2Model(client, inMenu? menuSelection[client] : activeSelection[client], model);
+	return GetModelFromSelection(client, inMenu? menuSelection[client] : activeSelection[client], model);
 }
 
 void GetSelectionDataAuto(int client, SelectionData selectionData)
@@ -309,11 +308,11 @@ void GetSelectionDataAuto(int client, SelectionData selectionData)
 	selectionData = menuSelection[client].IsValid()? menuSelection[client] : activeSelection[client];
 }
 
-bool Selection2Model(int client, const SelectionData data, PlayerModel model)
+bool GetModelFromSelection(int client, const SelectionData selectionData, PlayerModel model)
 {
-	if (data.index != -1 && selectableModels[client] && selectableModels[client].Length)
+	if (selectionData.index != -1 && selectableModels[client] && selectableModels[client].Length)
 	{
-		modelList.GetArray(selectableModels[client].Get(data.index), model);
+		modelList.GetArray(selectableModels[client].Get(selectionData.index), model);
 		return true;
 	}
 	return false;
@@ -324,19 +323,21 @@ public MRESReturn Hook_SetModel(int client, DHookParam hParams)
 	SelectionData selection;
 	PlayerModel model;
 	GetSelectionDataAuto(client, selection);
-	if (Selection2Model(client, selection, model))
+	if (GetModelFromSelection(client, selection, model))
 	{
 		DHookSetParamString(hParams, 1, model.path);
 		SetEntitySkin(client, model.GetSkin(selection.skin));
-		SetEntityBody(client, model.GetBody(selection.body));
+		UpdateSubModels(client, model, selection);
+
 		// Delay needed for Black Mesa
-		CreateTimer(0.1, Timer_UpdateModelAccessories, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(0.1, Timer_SetModelPost, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
+
 		return MRES_ChangedHandled;
 	}
 	return MRES_Ignored;
 }
 
-void Timer_UpdateModelAccessories(Handle timer, int userid)
+void Timer_SetModelPost(Handle timer, int userid)
 {
 	int client = GetClientOfUserId(userid);
 	if (client)
@@ -344,13 +345,35 @@ void Timer_UpdateModelAccessories(Handle timer, int userid)
 		SelectionData selection;
 		PlayerModel model;
 		GetSelectionDataAuto(client, selection);
-		if (Selection2Model(client, selection, model))
+		if (GetModelFromSelection(client, selection, model))
 		{
 			SetEntitySkin(client, model.GetSkin(selection.skin));
-			SetEntityBody(client, model.GetBody(selection.body));
+			UpdateSubModels(client, model, selection);
 			UpdateViewModels(client);
 		}
 	}
+}
+ 
+void UpdateSubModels(int client, const PlayerModel model, const SelectionData selection)
+{
+	int body;
+
+	// transpose gameplay driven bodygroups (e.g. longjump) to new model
+	StringMap submodelsMap = GetEntityBodygroupsMap(client);
+	ApplyStudioBodyGroupsFromMap(StudioHdr(model.path), submodelsMap, body);
+	delete submodelsMap;
+
+	// apply selected submodels
+	int len = model.BodyGroupCount();
+	PlayerModelBodyGroup bodyGroup;
+	for (int i = 0; i < len; i++)
+	{
+		model.GetBodyGroup(i, bodyGroup);
+		CalcBodygroup(bodyGroup.base, bodyGroup.numModels, body, selection.subModels[i]);
+	}
+
+	// set the new body value
+	SetEntityBody(client, body);
 }
 
 void RefreshModel(int client)
@@ -376,9 +399,9 @@ void ReloadClientModels(int client)
 	if (!selectableModels[client])
 		return;
 	
-	if (IsInMenu(client))
+	if (UI.IsOpen(client))
 	{
-		ExitModelChooser(client, true, true);
+		UI.Exit(client, true, true);
 	}
 	ResetClientModels(client);
 	InitClientModels(client);
@@ -455,9 +478,23 @@ bool SelectModelByName(int client, const char[] modelName, int skin = 0, int bod
 		int clIndex = selectableModels[client].FindValue(index);
 		if (clIndex != -1 && !IsModelLocked(model, client))
 		{
+			activeSelection[client].Reset();
 			activeSelection[client].index = clIndex;
-			activeSelection[client].skin = model.IndexOfSkin(skin);
-			activeSelection[client].body = model.IndexOfBody(body);
+			activeSelection[client].skin = model.FindSkin(skin);
+
+			PlayerModelBodyGroup bodyGroup;
+			int len = model.BodyGroupCount();
+			for (int i = 0; i < len; i++)
+			{
+				model.GetBodyGroup(i, bodyGroup);
+				int subModelIndex = CalcBodygroupSubmodel(bodyGroup.base, bodyGroup.numModels, body);
+				if (subModelIndex < 0 || subModelIndex >= bodyGroup.numModels)
+				{
+					subModelIndex = 0;
+				}
+				activeSelection[client].subModels[i] = subModelIndex;
+			}
+
 			RefreshModel(client);
 			CallModelChanged(client, model);
 			return true;
@@ -498,10 +535,11 @@ bool SelectDefaultModel(int client)
 	
 	if (maxPrioList.Length)
 	{
+		activeSelection[client].Reset();
 		activeSelection[client].index = maxPrioList.Get(Math_GetRandomInt(0, maxPrioList.Length - 1));
 
 		PlayerModel model;
-		Selection2Model(client, activeSelection[client], model);
+		GetModelFromSelection(client, activeSelection[client], model);
 		RefreshModel(client);
 		CallModelChanged(client, model);
 		delete maxPrioList;
@@ -572,13 +610,4 @@ SoundPack GetSoundPack(const PlayerModel model, bool emptyDefault = true)
 		emptySoundPack = new SoundPack();
 	}
 	return emptySoundPack;
-}
-
-void ForceFullUpdate(int client)
-{
-	if (cvForceFullUpdate.BoolValue && callGetClient && callUpdateAcknowledgedFramecount)
-	{
-		int pClient = SDKCall(callGetClient, client - 1) - 4;
-		SDKCall(callUpdateAcknowledgedFramecount, pClient, -1);
-	}
 }

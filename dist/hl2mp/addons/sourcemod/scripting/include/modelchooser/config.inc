@@ -1,43 +1,46 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-void LoadConfig()
+methodmap Config
 {
-	char szConfigPath[PLATFORM_MAX_PATH];
-	BuildPath(Path_SM, szConfigPath, sizeof(szConfigPath), "configs/player_models.cfg");
-	if (!FileExists(szConfigPath))
-		SetFailState("File %s doesn't exist", szConfigPath);
-	
-	KeyValues kv = new KeyValues("");
-	char section[32];
-	if (!(kv.ImportFromFile(szConfigPath) && kv.GetSectionName(section, sizeof(section)) && strcmp(section, "ModelSystem", false) == 0))
-		SetFailState("Couldn't import %s into KeyValues", szConfigPath);
-		
-	if (kv.GotoFirstSubKey())
+	public static void Load()
 	{
-		do
+		char szConfigPath[PLATFORM_MAX_PATH];
+		BuildPath(Path_SM, szConfigPath, sizeof(szConfigPath), "configs/player_models.cfg");
+		if (!FileExists(szConfigPath))
+			SetFailState("File %s doesn't exist", szConfigPath);
+		
+		KeyValues kv = new KeyValues("");
+		char section[32];
+		if (!(kv.ImportFromFile(szConfigPath) && kv.GetSectionName(section, sizeof(section)) && strcmp(section, "ModelSystem", false) == 0))
+			SetFailState("Couldn't import %s into KeyValues", szConfigPath);
+			
+		if (kv.GotoFirstSubKey())
 		{
-			if (kv.GetSectionName(section, sizeof(section)))
+			do
 			{
-				if (StrEqual(section, "Models", false))
+				if (kv.GetSectionName(section, sizeof(section)))
 				{
-					ParseModels(kv);
-				}
-				else if (StrEqual(section, "Sounds", false))
-				{
-					ParseSounds(kv);
+					if (StrEqual(section, "Models", false))
+					{
+						ParseModels(kv);
+					}
+					else if (StrEqual(section, "Sounds", false))
+					{
+						ParseSounds(kv);
+					}
 				}
 			}
+			while (kv.GotoNextKey());
 		}
-		while (kv.GotoNextKey());
-	}
-	delete kv;
+		delete kv;
 
-	Call_StartForward(fwdOnConfigLoaded);
-	Call_Finish();
+		Call_StartForward(fwdOnConfigLoaded);
+		Call_Finish();
+	}
 }
 
-void ParseModels(KeyValues kv)
+static void ParseModels(KeyValues kv)
 {
 	StringMap duplicityChecker = new StringMap();
 	char buffer[128];
@@ -63,8 +66,8 @@ void ParseModels(KeyValues kv)
 				SmartDM.AddEx(model.path, downloads, true, true);
 
 				StudioHdr studio = StudioHdr(model.path);
-				model.skins = ProcessSkins(studio, ParseDelimitedIntList(kv, "skins"));
-				model.bodyGroups = ProcessBodyGroups(studio, ParseDelimitedIntList(kv, "bodygroups"));
+				model.skins = ProcessSkins(studio, ParseDelimitedIntList(kv, "skins"), ParseDelimitedIntList(kv, "!skins"));
+				model.bodyGroups = ProcessBodyGroups(studio, ParseDelimitedStringList(kv, "bodygroups"), ParseDelimitedStringList(kv, "!bodygroups"));
 
 				kv.GetString("vmbody", model.vmBodyGroups, sizeof(model.vmBodyGroups));
 				TrimString(model.vmBodyGroups);
@@ -119,7 +122,7 @@ void ParseModels(KeyValues kv)
 	delete duplicityChecker;
 }
 
-void ParseAnims(KeyValues kv, StudioHdr studiohdr, PlayerModel model)
+static void ParseAnims(KeyValues kv, StudioHdr studiohdr, PlayerModel model)
 {
 	StringMap act2seq = new StringMap();
 	StringMap seqNums = new StringMap();
@@ -162,7 +165,7 @@ void ParseAnims(KeyValues kv, StudioHdr studiohdr, PlayerModel model)
 	seqNums.Close();
 }
 
-void ParseAnim(KeyValues kv, PlayerModel model, PlayerAnimation anim, const char[] key, StringMap act2seq, StringMap seqNums)
+static void ParseAnim(KeyValues kv, PlayerModel model, PlayerModelAnimation anim, const char[] key, StringMap act2seq, StringMap seqNums)
 {
 	char szSearchName[MAX_ANIM_NAME];
 
@@ -199,7 +202,7 @@ void ParseAnim(KeyValues kv, PlayerModel model, PlayerAnimation anim, const char
 	}
 }
 
-void ParseSounds(KeyValues kv)
+static void ParseSounds(KeyValues kv)
 {
 	if (kv.GotoFirstSubKey())
 	{
@@ -216,7 +219,7 @@ void ParseSounds(KeyValues kv)
 	}
 }
 
-SoundPack ParseSoundPack(KeyValues kv)
+static SoundPack ParseSoundPack(KeyValues kv)
 {
 	SoundPack soundPack = new SoundPack();
 	if (kv.GotoFirstSubKey())
@@ -235,7 +238,7 @@ SoundPack ParseSoundPack(KeyValues kv)
 	return soundPack;
 }
 
-ArrayList ParseFileItems(KeyValues kv, bool precache, const char[] folderType = "")
+static ArrayList ParseFileItems(KeyValues kv, bool precache, const char[] folderType = "")
 {
 	ArrayList files = new ArrayList(PLATFORM_MAX_PATH);
 	char path[PLATFORM_MAX_PATH];
@@ -261,7 +264,103 @@ ArrayList ParseFileItems(KeyValues kv, bool precache, const char[] folderType = 
 	return files;
 }
 
-ArrayList ParseDelimitedIntList(KeyValues kv, const char[] key)
+static void ParseCustomProperties(KeyValues kv, StringMap map)
+{
+	if (kv.GotoFirstSubKey(false))
+	{
+		char key[256], value[4096];
+		do
+		{
+			if (kv.GetSectionName(key, sizeof(key)))
+			{
+				String_ToUpper(key, key, sizeof(key));
+				kv.GetString(NULL_STRING, value, sizeof(value));
+				map.SetString(key, value);
+			}
+		}
+		while (kv.GotoNextKey(false));
+		kv.GoBack();
+	}
+}
+
+static void ParseInterval(KeyValues kv, Interval interval, const char[] key, float defualtMin = 0.0, float defaultMax = 0.0)
+{
+	char val[32];
+	kv.GetString(key, val, sizeof(val), "");
+
+	if (val[0] == EOS)
+	{
+		interval.min = defualtMin;
+		interval.max = defaultMax;
+		return;
+	}
+
+	int delim = StrContains(val, ";");
+	if (delim != -1 && delim != sizeof(val) - 1)
+	{
+		interval.max = StringToFloat(val[delim + 1]);
+		val[delim] = '\0';
+		interval.min = StringToFloat(val);
+		return;
+	}
+
+	interval.min = interval.max = StringToFloat(val);
+}
+
+static ArrayList ProcessSkins(StudioHdr studio, ArrayList allowList, ArrayList blockList)
+{
+	ArrayList processedList = new ArrayList();
+	int numSkins = studio.numskinfamilies;
+	
+	for (int i = 0; i < numSkins; i++)
+	{
+		if ((!allowList || allowList.FindValue(i) != -1) && (!blockList || blockList.FindValue(i) == -1))
+		{
+			processedList.Push(i);
+		}
+	}
+
+	if (!processedList.Length)
+	{
+		processedList.Push(0);
+	}
+	
+	delete allowList;
+	delete blockList;
+	return processedList;
+}
+
+static ArrayList ProcessBodyGroups(StudioHdr studio, ArrayList allowList, ArrayList blockList)
+{
+	ArrayList processedList = new ArrayList(sizeof(PlayerModelBodyGroup));
+	PlayerModelBodyGroup info;
+
+	int numBodyParts = studio.numbodyparts;
+	for (int i = 0; i < numBodyParts; i++)
+	{
+		BodyPart pBodyPart = studio.GetBodyPart(i);
+		info.numModels = pBodyPart.nummodels;
+		if (info.numModels > 1)
+		{
+			pBodyPart.GetName(info.name, sizeof(info.name));
+			_modelchooser_normalize(info.name, info.name);
+
+			if ((!allowList || allowList.FindString(info.name) != -1)
+				&& (!blockList || blockList.FindString(info.name) == -1))
+			{
+				info.base = pBodyPart.base;
+				info.group = i;
+				processedList.PushArray(info);
+			}
+		}
+	}
+
+	delete allowList;
+	delete blockList;
+	return processedList;
+}
+
+static ArrayList ParseDelimitedIntList(KeyValues kv, const char[] key)
 {
 	if (!kv.JumpToKey(key))
 		return null;
@@ -297,114 +396,40 @@ ArrayList ParseDelimitedIntList(KeyValues kv, const char[] key)
 	return list;
 }
 
-void ParseCustomProperties(KeyValues kv, StringMap map)
+static ArrayList ParseDelimitedStringList(KeyValues kv, const char[] key)
 {
-	if (kv.GotoFirstSubKey(false))
-	{
-		char key[256], value[4096];
-		do
-		{
-			if (kv.GetSectionName(key, sizeof(key)))
-			{
-				String_ToUpper(key, key, sizeof(key));
-				kv.GetString(NULL_STRING, value, sizeof(value));
-				map.SetString(key, value);
-			}
-		}
-		while (kv.GotoNextKey(false));
-		kv.GoBack();
-	}
-}
-
-void ParseInterval(KeyValues kv, Interval interval, const char[] key, float defualtMin = 0.0, float defaultMax = 0.0)
-{
-	char val[32];
-	kv.GetString(key, val, sizeof(val), "");
-
-	if (val[0] == EOS)
-	{
-		interval.min = defualtMin;
-		interval.max = defaultMax;
-		return;
-	}
-
-	int delim = StrContains(val, ";");
-	if (delim != -1 && delim != sizeof(val) - 1)
-	{
-		interval.max = StringToFloat(val[delim + 1]);
-		val[delim] = '\0';
-		interval.min = StringToFloat(val);
-		return;
-	}
-
-	interval.min = interval.max = StringToFloat(val);
-}
-
-ArrayList ProcessSkins(StudioHdr studio, ArrayList list)
-{
-	int numSkins = studio.numskinfamilies;
-
-	if (list)
-	{
-		for (int i = list.Length - 1; i >= 0; i--)
-		{
-			int skin = list.Get(i);
-			if (skin < 0 || skin >= numSkins)
-			{
-				list.Erase(i);
-			}
-		}
-	}
-	else
-	{
-		list = new ArrayList();
-		for (int i = 0; i < numSkins; i++)
-		{
-			list.Push(i);
-		}
-	}
-
-	if (!list.Length)
-	{
-		list.Push(0);
-	}
+	if (!kv.JumpToKey(key))
+		return null;
 	
-	return list;
-}
-
-ArrayList ProcessBodyGroups(StudioHdr studio, ArrayList list)
-{
-	int numBodyGroups;
-	for (int i = studio.numbodyparts - 1; i >= 0; i--)
+	char value[2048], buffer[MODELCHOOSER_MAX_NAME];
+	kv.GetString(NULL_STRING, value, sizeof(value));
+	
+	ArrayList list = new ArrayList(MODELCHOOSER_MAX_NAME);
+	
+	for (int i, n;;)
 	{
-		BodyPart pBodyPart = studio.GetBodyPart(i);
-		numBodyGroups += pBodyPart.nummodels;
-	}
-
-	if (list)
-	{
-		for (int i = list.Length - 1; i >= 0; i--)
+		n = SplitString(value[i], ";", buffer, sizeof(buffer));
+		if (n == -1)
 		{
-			int bodyGroup = list.Get(i);
-			if (bodyGroup < 0 || bodyGroup >= numBodyGroups)
+			// remainder
+			strcopy(buffer, sizeof(buffer), value[i]);
+			TrimString(buffer);
+			if (buffer[0] != EOS)
 			{
-				list.Erase(i);
+				_modelchooser_normalize(buffer, buffer);
+				list.PushString(buffer);
 			}
+			break;
 		}
-	}
-	else
-	{
-		list = new ArrayList();
-		for (int i = 0; i < numBodyGroups; i++)
+		i += n;
+		TrimString(buffer);
+		if (buffer[0] != EOS)
 		{
-			list.Push(i);
+			_modelchooser_normalize(buffer, buffer);
+			list.PushString(buffer);
 		}
 	}
 
-	if (!list.Length)
-	{
-		list.Push(0);
-	}
-
+	kv.GoBack();
 	return list;
 }

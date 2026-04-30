@@ -68,25 +68,12 @@
 				"windows"	"371"
 				"linux"		"372"
 			}
-			
-			// Engine
-
-			"CBaseServer::GetClient" // CBaseServer::GetClient(int)
-			{
-				"windows"	"6"
-				"linux"		"7"
-			}
-			"CBaseClient::UpdateAcknowledgedFramecount" // CBaseClient::UpdateAcknowledgedFramecount(int)
-			{
-				"windows"	"4"
-				"linux"		"44"
-			}
 		}
 		"Signatures"
 		{
 			"CBaseAnimating::ResetSequence" // CBaseAnimating::ResetSequence(int nSequence)
 			{
-				"windows" "\x55\x8B\xEC\x51\xA1\x2A\x2A\x2A\x2A\x53\x56\x57\x83\x78\x30\x00" // str: "ResetSequence : %s: %s -> %s\n"
+				"windows" "\x55\x8B\xEC\xA1\x2A\x2A\x2A\x2A\x53\x56\x57\x83\x78\x30\x00\x8B\xD9" // str: "ResetSequence : %s: %s -> %s\n"
 				"linux" "@_ZN14CBaseAnimating13ResetSequenceEi"
 			}
 		}
@@ -109,19 +96,6 @@
 			{
 				"windows"	"385"
 				"linux"		"386"
-			}
-
-			// Engine
-
-			"CBaseServer::GetClient" // CBaseServer::GetClient(int)
-			{
-				"windows"	"6"
-				"linux"		"7"
-			}
-			"CBaseClient::UpdateAcknowledgedFramecount" // CBaseClient::UpdateAcknowledgedFramecount(int)
-			{
-				"windows"	"4"
-				"linux"		"44"
 			}
 		}
 	}

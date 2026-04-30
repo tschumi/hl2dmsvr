@@ -4,11 +4,11 @@
 #define MODELCHOOSER_MAX_NAME 64
 
 #if !defined MAX_TEAMS
-#define MAX_TEAMS				32	// Max number of teams in a game
+  #define MAX_TEAMS				32	// Max number of teams in a game
 #endif
 
 #if !defined MAX_TEAM_NAME_LENGTH
-#define MAX_TEAM_NAME_LENGTH	32	// Max length of a team's name
+  #define MAX_TEAM_NAME_LENGTH	32	// Max length of a team's name
 #endif
 
 enum struct Interval
@@ -57,7 +57,7 @@ methodmap SoundPack < StringMap
 	public void AddSoundList(const char[] soundType, SoundList soundList)
 	{
 		char soundTypeNorm[MODELCHOOSER_MAX_NAME];
-		_modelchooser_normalize_name(soundType, soundTypeNorm);
+		_modelchooser_normalize(soundType, soundTypeNorm);
 
 		if (!this.SetValue(soundTypeNorm, soundList, false))
 		{
@@ -71,7 +71,7 @@ methodmap SoundPack < StringMap
 			return null;
 		
 		char soundTypeNorm[MODELCHOOSER_MAX_NAME];
-		_modelchooser_normalize_name(soundType, soundTypeNorm);
+		_modelchooser_normalize(soundType, soundTypeNorm);
 
 		SoundList soundList;
 		this.GetValue(soundTypeNorm, soundList);
@@ -130,7 +130,7 @@ methodmap SoundMap < StringMap
 	public void AddSoundPack(const char[] name, SoundPack pack)
 	{
 		char nameNorm[MODELCHOOSER_MAX_NAME];
-		_modelchooser_normalize_name(name, nameNorm);
+		_modelchooser_normalize(name, nameNorm);
 
 		if (!this.SetValue(nameNorm, pack, false))
 		{
@@ -144,7 +144,7 @@ methodmap SoundMap < StringMap
 			return null;
 		
 		char nameNorm[MODELCHOOSER_MAX_NAME];
-		_modelchooser_normalize_name(name, nameNorm);
+		_modelchooser_normalize(name, nameNorm);
 
 		SoundPack soundPack;
 		this.GetValue(nameNorm, soundPack);
@@ -241,7 +241,7 @@ methodmap WeightedSequenceList < ArrayList
 	}
 }
 
-enum struct PlayerAnimation
+enum struct PlayerModelAnimation
 {
 	WeightedSequenceList seqList;
 	float rate;
@@ -250,6 +250,14 @@ enum struct PlayerAnimation
 	{
 		delete this.seqList;
 	}
+}
+
+enum struct PlayerModelBodyGroup
+{
+	char name[MODELCHOOSER_MAX_NAME];
+	int group;
+	int base;
+	int numModels;
 }
 
 enum struct PlayerModel
@@ -270,13 +278,13 @@ enum struct PlayerModel
 	ArrayList bodyGroups;
 	StringMap customProperties;
 
-	PlayerAnimation anim_idle;
-	PlayerAnimation anim_walk;
-	PlayerAnimation anim_run;
-	PlayerAnimation anim_jump;
-	PlayerAnimation anim_idle_crouch;
-	PlayerAnimation anim_walk_crouch;
-	PlayerAnimation anim_noclip;
+	PlayerModelAnimation anim_idle;
+	PlayerModelAnimation anim_walk;
+	PlayerModelAnimation anim_run;
+	PlayerModelAnimation anim_jump;
+	PlayerModelAnimation anim_idle_crouch;
+	PlayerModelAnimation anim_walk_crouch;
+	PlayerModelAnimation anim_noclip;
 	
 	void Close()
 	{
@@ -315,34 +323,50 @@ enum struct PlayerModel
 		return team;
 	}
 
+	int SkinCount()
+	{
+		return this.skins.Length;
+	}
+
 	int GetSkin(int index)
 	{
 		return this.skins.Get(index);
 	}
 
-	int GetBody(int index)
-	{
-		return this.bodyGroups.Get(index);
-	}
-
-	int IndexOfSkin(int skin, int fallback = 0)
+	int FindSkin(int skin, int fallbackValue = 0)
 	{
 		int i = this.skins.FindValue(skin);
-		return i == -1 ? fallback : i;
+		return i == -1 ? fallbackValue : i;
 	}
 
-	int IndexOfBody(int body, int fallback = 0)
+	int BodyGroupCount()
 	{
-		int i = this.bodyGroups.FindValue(body);
-		return i == -1 ? fallback : i;
+		return this.bodyGroups.Length;
+	}
+	
+	void GetBodyGroup(int index, PlayerModelBodyGroup bodyGroup)
+	{
+		this.bodyGroups.GetArray(index, bodyGroup);
+	}
+
+	int FindBodyGroup(int group, int fallbackValue = -1)
+	{
+		int i = this.bodyGroups.FindValue(group, PlayerModelBodyGroup::group);
+		return i == -1 ? fallbackValue : i;
+	}
+
+	int FindBodyGroupByName(const char[] name, int fallbackValue = -1)
+	{
+		int i = this.bodyGroups.FindString(name, PlayerModelBodyGroup::name);
+		return i == -1 ? fallbackValue : i;
 	}
 }
 
-methodmap ModelList < ArrayList
+methodmap PlayerModelList < ArrayList
 {
-	public ModelList()
+	public PlayerModelList()
 	{
-		return view_as<ModelList>(new ArrayList(sizeof(PlayerModel)));
+		return view_as<PlayerModelList>(new ArrayList(sizeof(PlayerModel)));
 	}
 	
 	public void Clear()
@@ -360,7 +384,7 @@ methodmap ModelList < ArrayList
 	public int FindByName(const char[] modelName)
 	{
 		char nameNorm[MODELCHOOSER_MAX_NAME];
-		_modelchooser_normalize_name(modelName, nameNorm);
+		_modelchooser_normalize(modelName, nameNorm);
 
 		return this.FindString(nameNorm, PlayerModel::name);
 	}
@@ -379,25 +403,35 @@ methodmap ModelList < ArrayList
 
 enum struct SelectionData
 {
-	// Index into selectableModels, -1 = invalid
+	// Selected model - index into selectableModels (contains filtered PlayerModels), -1 = invalid
 	int index;
+	
+	// Currently selected option, an index into combined sequence of available skin and submodel selectors, default 0
+	int optionIndex;
 
-	// Index into PlayerModel.skins
+	// Selected skin - index into PlayerModel.skins, default 0
 	int skin;
 
-	// Index into PlayerModel.bodyGroups
-	int body;
+	// Bodygroup selected submodels - array indexes match with PlayerModel.bodyGroups, default 0
+	int subModels[64];
 
 	// Cached by menu
-	int skinCount;
-	int bodyCount;
 	bool locked;
 
 	void Reset()
 	{
 		this.index = -1;
-		this.skin = this.skinCount = this.body = this.bodyCount = 0;
 		this.locked = false;
+		this.ResetModelOptions();
+	}
+
+	void ResetModelOptions()
+	{
+		this.skin = this.optionIndex = 0;
+		for (int i = 0; i < sizeof(SelectionData::subModels); i++)
+		{
+			this.subModels[i] = 0;
+		}
 	}
 	
 	bool IsValid()
@@ -438,7 +472,8 @@ enum struct PersistentPreferences
 	}
 }
 
-void _modelchooser_normalize_name(const char[] name, char nameNorm[MODELCHOOSER_MAX_NAME])
+/* Needs to be here as structs.inc is included for rawdog plugin api */
+void _modelchooser_normalize(const char[] name, char nameNorm[MODELCHOOSER_MAX_NAME])
 {
 	strcopy(nameNorm, sizeof(nameNorm), name);
 	for (int i = 0; nameNorm[i] != '\0'; i++)
