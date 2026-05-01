@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  hl2dm: 
+    image: hl2dmsvr:24.04-002
+    container_name: hl2dmsvr
+    restart: always
+    network_mode: host    
+    stdin_open: true
+    tty: true  
+    environment:
+      SV_HOSTNAME: My HL2DM Server
+      PUBLIC: 0
+      RCON_PASSWORD: my_rcon_password
+      SV_PASSWORD: my_server_password
+      WINLIMIT: 20
+      MAP: canale_grande_v2 
+      MAXPLAYERS: 4
+      SV_DOWNLOADURL: "http://yourdomain.com/srcds/"
