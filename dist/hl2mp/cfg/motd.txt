@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>Hoppi Galoppi HL2DM Server</title>
+    <style type="text/css">
+        body {
+            color: #FF8C00;            /* Orange text */
+            font-family: Verdana, sans-serif;
+            margin: 20px;
+        }
+        h1 { color: #FFFFFF; }         /* White header */
+        .highlight { color: #00FF00; } /* Green highlight */
+    </style>
+</head>
+<body>
+    <h2>Hoppi Galoppi HL2DM Server</h2>
+    <p>Play to win, but play with honor and respect.</p>
+    <p><em>To change your player model, type <strong>!models</strong> in chat after joining the level. This works best in a open space.</em></p>
+</body>
+</html>
