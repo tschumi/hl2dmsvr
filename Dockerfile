@@ -1,48 +1,38 @@
 FROM ubuntu:26.04
 
-ARG TZ="Europe/Zurich"
-ARG contentServer="http://tswb.ch/srcds"
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ="Europe/Zurich"
+ENV CONTENT_SERVER="http://tswb.ch/srcds"
 
-RUN dpkg --add-architecture i386 \ 
+RUN dpkg --add-architecture i386 \
 	&& apt-get update \
-	&& apt-get install -y unzip p7zip-full curl wget lib32gcc-s1 iproute2 vim-tiny bzip2 jq software-properties-common apt-transport-https libsdl2-2.0-0:i386 \
-	&& apt-get clean
-RUN echo "$TZ" > /etc/timezone
-RUN  ln -fs /usr/share/zoneinfo/$TZ /etc/localtime
+	&& apt-get install -y --no-install-recommends \
+		ca-certificates wget tzdata lib32gcc-s1 libsdl2-2.0-0:i386 iproute2 vim-tiny \
+	&& rm -rf /var/lib/apt/lists/*
 
-# go with steamcmd 
-RUN useradd -m steam
-RUN mkdir -p /steam/steamcmd_linux
-RUN chown -R steam /steam
+RUN useradd -m steam \
+	&& mkdir -p /steam/steamcmd_linux /steam/hl2dm \
+	&& chown -R steam:steam /steam
 
 USER steam
 
+# install steamcmd and let it self-update once, so the first container start is faster
 WORKDIR /steam/steamcmd_linux
-RUN wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz 
-RUN tar -xf steamcmd_linux.tar.gz
-# let steamcmd self-update first; app_update right after the bootstrap update often fails with "Missing configuration"
-RUN ./steamcmd.sh +login anonymous +quit || true
+RUN wget -qO- https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar -xz \
+	&& (./steamcmd.sh +quit || true)
 
-# go with hl2dm
-RUN mkdir -p /steam/hl2dm
-RUN for i in 1 2 3; do \
-		./steamcmd.sh +force_install_dir /steam/hl2dm +login anonymous +app_update 232370 validate +quit && exit 0; \
-		echo "steamcmd failed (attempt $i), retrying..."; sleep 5; \
-	done; exit 1
+# game files are installed/updated by start.sh into this volume on every start
+VOLUME /steam/hl2dm
 
-WORKDIR /steam/hl2dm/
+# own configs, plugins etc. are copied over the game files by start.sh on every start
+COPY --chown=steam:steam ./dist /steam/dist/
+COPY --chown=steam:steam --chmod=755 start.sh /steam/start.sh
 
-COPY --chown=steam ./dist /steam/hl2dm/
-COPY --chown=steam start.sh /steam/hl2dm/
-
-RUN wget -P /steam/hl2dm/hl2mp/maps/ --no-verbose -i /steam/hl2dm/hl2mp/maps/maps.txt --base="$contentServer/maps/" \
-	&& chown -R steam:steam /steam/hl2dm/hl2mp/maps/
-
-RUN chmod +x /steam/hl2dm/start.sh
+WORKDIR /steam/hl2dm
 
 EXPOSE 27015/tcp
 EXPOSE 27015/udp
 EXPOSE 27020/udp
 EXPOSE 26900/udp
 
-CMD ["./start.sh"]
+CMD ["/steam/start.sh"]

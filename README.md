@@ -20,8 +20,10 @@ There are the following environment variables:
 To run it directly you can use the following command and add as much environment variables with -e as you need.
 
 ```shell
-docker run -it --rm --net=host dts2k/hl2dmsvr -e "SV_HOSTNAME=<Name of your Server>" -e "MAP=<map to start with>"
+docker run -it --rm --net=host -v hl2dm:/steam/hl2dm -e "SV_HOSTNAME=<Name of your Server>" -e "MAP=<map to start with>" dts2k/hl2dmsvr
 ```
+
+The game files are not part of the image. On every start the container installs or updates HL2DM via steamcmd into the volume `/steam/hl2dm`, copies the configs and plugins from `dist/` over it and downloads missing maps. The first start therefore takes a while and needs about 5 GB of disk space; later starts only download updates. Keep the volume (`-v hl2dm:/steam/hl2dm`), otherwise the game is downloaded again on every start.
 
 To run it with docker-compose you have to change the environment variables in the docker-compose.yml to your own needs. Example:
 
@@ -34,7 +36,9 @@ services:
     restart: always
     network_mode: host    
     stdin_open: true
-    tty: true  
+    tty: true
+    volumes:
+      - hl2dm:/steam/hl2dm
     environment:
       SV_HOSTNAME: <Name of your Server>
       PUBLIC: 0
@@ -43,6 +47,9 @@ services:
       WINLIMIT: 20
       MAP: canale_grande_v2 
       MAXPLAYERS: 8
+
+volumes:
+  hl2dm:
 ```
 
 After that, fire up your HL2DM server with:

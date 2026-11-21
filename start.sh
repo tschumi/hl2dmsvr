@@ -1,5 +1,31 @@
 #!/bin/bash
 
+GAME_DIR="/steam/hl2dm"
+
+# Install or update the game; retry because steamcmd fails sporadically ("Missing configuration")
+for i in 1 2 3; do
+    /steam/steamcmd_linux/steamcmd.sh +force_install_dir "$GAME_DIR" +login anonymous +app_update 232370 +quit && break
+    echo "steamcmd failed (attempt $i)"
+    if [[ $i == 3 ]]; then
+        if [[ -x "$GAME_DIR/srcds_run" ]]; then
+            echo "Update failed, starting existing installation"
+        else
+            echo "Installation failed, exiting"
+            exit 1
+        fi
+    fi
+    sleep 5
+done
+
+# Copy own configs, plugins etc. over the game files (overwrites changes made inside the volume)
+cp -a /steam/dist/. "$GAME_DIR/"
+
+# Download missing maps
+wget -P "$GAME_DIR/hl2mp/maps/" --no-verbose --no-clobber -i "$GAME_DIR/hl2mp/maps/maps.txt" --base="$CONTENT_SERVER/maps/" \
+    || echo "Some maps could not be downloaded"
+
+cd "$GAME_DIR" || exit 1
+
 [[ -z $MAP ]] && MAP="dm_underpass"
 [[ -z $MAXPLAYERS ]] && MAXPLAYERS=8
 

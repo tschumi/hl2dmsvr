@@ -2,7 +2,7 @@ version: '3'
 
 services:
   hl2dm: 
-    image: hl2dmsvr:24.04-002
+    image: hl2dmsvr:latest
     container_name: hl2dmsvr
     restart: always
     network_mode: host    
@@ -10,6 +10,8 @@ services:
     tty: true  
     security_opt:
       - seccomp:unconfined
+    volumes:
+      - hl2dm:/steam/hl2dm
     environment:
       SV_HOSTNAME: My HL2DM Server
       PUBLIC: 0
@@ -19,3 +21,6 @@ services:
       MAP: canale_grande_v2 
       MAXPLAYERS: 4
       SV_DOWNLOADURL: "http://yourdomain.com/srcds/"
+
+volumes:
+  hl2dm:
