@@ -27,25 +27,24 @@ The game files are not part of the image. On every start the container installs 
 
 To run it with docker-compose you have to change the environment variables in the docker-compose.yml to your own needs. Example:
 
-```
-version: '3'
+```yaml
 services:
   app:
     image: dts2k/hl2dmsvr
     container_name: hl2dmsvr
-    restart: always
-    network_mode: host    
+    restart: unless-stopped
+    network_mode: host
     stdin_open: true
     tty: true
     volumes:
       - hl2dm:/steam/hl2dm
     environment:
-      SV_HOSTNAME: <Name of your Server>
+      SV_HOSTNAME: "<Name of your Server>"
       PUBLIC: 0
       RCON_PASSWORD: <Your RCON Password>
       SV_PASSWORD: <Your SV Password>
       WINLIMIT: 20
-      MAP: canale_grande_v2 
+      MAP: canale_grande_v2
       MAXPLAYERS: 8
 
 volumes:
