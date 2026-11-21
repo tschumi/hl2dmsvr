@@ -3,7 +3,7 @@
 [[ -z $MAP ]] && MAP="dm_underpass"
 [[ -z $MAXPLAYERS ]] && MAXPLAYERS=8
 
-if [[ -n $PUBLIC ]]
+if [[ $PUBLIC == 1 ]]
 then
     SV_LAN="+sv_lan 0"
 else
