@@ -20,10 +20,15 @@ USER steam
 WORKDIR /steam/steamcmd_linux
 RUN wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz 
 RUN tar -xf steamcmd_linux.tar.gz
+# let steamcmd self-update first; app_update right after the bootstrap update often fails with "Missing configuration"
+RUN ./steamcmd.sh +login anonymous +quit || true
 
 # go with hl2dm
 RUN mkdir -p /steam/hl2dm
-RUN ./steamcmd.sh +force_install_dir /steam/hl2dm +login anonymous +app_update 232370 +quit
+RUN for i in 1 2 3; do \
+		./steamcmd.sh +force_install_dir /steam/hl2dm +login anonymous +app_update 232370 validate +quit && exit 0; \
+		echo "steamcmd failed (attempt $i), retrying..."; sleep 5; \
+	done; exit 1
 
 WORKDIR /steam/hl2dm/
 
