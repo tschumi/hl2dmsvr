@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 ARG TZ="Europe/Zurich"
 ARG contentServer="http://tswb.ch/srcds"
